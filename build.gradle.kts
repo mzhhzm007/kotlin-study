@@ -6,14 +6,24 @@ buildscript {
     }
 }
 
+extra["springCloudVersion"] = "2020.0.0-M5"
+
+
 plugins {
     id("org.springframework.boot") version "2.2.0.RELEASE" apply false
-    id("io.spring.dependency-management") version "1.0.8.RELEASE" apply false
+    id("io.spring.dependency-management") version "1.0.8.RELEASE"
 
     kotlin("jvm") version "1.4.10" apply false
     kotlin("plugin.spring") version "1.4.10" apply false
     kotlin("plugin.jpa") version "1.4.10" apply false
     kotlin("plugin.allopen") version "1.3.61" apply false
+
+    `java-platform`
+    `maven-publish`
+}
+
+javaPlatform {
+    allowDependencies()
 }
 
 allprojects {
@@ -34,14 +44,31 @@ allprojects {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven("https://repo.spring.io/snapshot")
+        maven("https://repo.spring.io/milestone")
+    }
 }
 
 subprojects {
-    repositories {
-        mavenCentral()
+    apply(plugin = "org.springframework.boot")
+
+    println("Enabling Kotlin Spring plugin in project ${project.name}...")
+    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+
+    println("Enabling Spring Boot Dependency Management in project ${project.name}...")
+    apply(plugin = "io.spring.dependency-management")
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+        }
     }
 
-    apply {
-        plugin("io.spring.dependency-management")
-    }
 }
+
+
+
