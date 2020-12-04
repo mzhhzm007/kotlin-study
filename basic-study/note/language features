@@ -1,0 +1,37 @@
+1.
+Kotlin  ——  Java
+ a==b       a.equals(b)
+ a===b      a==b
+
+2.
+fun (test: Class.() -> Unit) : 表示fun函数 接收 一个Class类的函数作为参数传入
+
+3.
+val和var
+val：引用不可变 (类似Java final，反编译后Java代码是用final实现的)
+
+4.
+const val a = 0
+const 只能修饰object的属性,或者top-level变量
+const变量的值必须在编译期确定下来，所以它的类型只能是String或基本类型
+
+5.
+Kotlin会将动态代理编译后变为静态代理，Kotlin动态代理本质上是通过静态代理去调用的,所以比Java的动态代理效率高，Java的动态代理本质上是通过反射
+
+6
+函数中有lambda参数,lambda不允许中断外部函数的执行
+inline的函数中，如果参数有Lambda，lambda表达式中的return可以中断外部函数的调用
+
+inline：把 inline 方法以及方法中的 lambda 参数在编译期间复制到调用方，使用时需要注意流程跳转
+好处：减少函数调用以及对象生成
+不便：public inline方法，不可以引用类的私有变量
+     如果是有lambda参数的inline方法，因其允许中断外部函数调用，如果lambda中有return，有时候会导致调用方后面部分代码不执行，但是又很难发现
+
+noinline：不让inline关键字对函数的lambda参数进行内联，或者函数的返回值是lambda表达式
+
+crossinline：希望lambda也被inline，但是不影响调用方的控制流程（即避免非局部返回 non-local returns）
+
+
+7
+范型
+https://zhuanlan.zhihu.com/p/26965437
