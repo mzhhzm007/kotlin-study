@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
 	id("org.springframework.boot")
 	id("io.spring.dependency-management")
@@ -6,6 +8,20 @@ plugins {
 	kotlin("plugin.jpa")
 	kotlin("plugin.allopen")
 
+}
+
+tasks {
+	withType<KotlinCompile> {
+		kotlinOptions {
+			freeCompilerArgs =
+				listOf("-Xjsr305=strict", "-Xjvm-default=compatibility", "-Xemit-jvm-type-annotations")
+			jvmTarget = "1.8"
+		}
+	}
+
+	test {
+		useJUnitPlatform()
+	}
 }
 
 dependencies {
